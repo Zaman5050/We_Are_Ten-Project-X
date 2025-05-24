@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use BinaryCabin\LaravelUUID\Traits\HasUUID;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class {{ class }} extends Model
+{
+    use HasFactory, HasUUID, SoftDeletes;
+
+    protected $fillable = [];
+    protected $casts = [];
+
+    public static function findOrFailByUuid(string $uuid)
+    {
+        return static::byUUID($uuid)->firstOrFail();
+    }
+}

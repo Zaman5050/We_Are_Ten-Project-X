@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('chat_message_statuses', function (Blueprint $table) {
+            $table->id();
+            $table->uuid()->unique();
+
+            $table->unsignedBigInteger('chat_message_id');
+            $table->unsignedBigInteger('receiver_id');
+            $table->boolean('seen')->default(false);
+            
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('receiver_id')->references('id')->on('users')->constrained()->cascadeOnDelete();
+            $table->foreign('chat_message_id')->references('id')->on('chat_messages')->constrained()->cascadeOnDelete();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('chat_message_statuses');
+    }
+};
